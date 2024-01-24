@@ -1,7 +1,33 @@
 ﻿@page "/"
+@using ClassLibrary1.Models
+@using ClassLibrary1.Services
+@inject SegmentService SegmentSvc
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<hr>>
+@if (segments == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var segment in segments)
+        {
+            <li>@segment.Name</li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<Segment> segments;
+    protected override async Task OnInitializedAsync()
+    {
+        segments = await SegmentSvc.GetSegmentsAsync(null);
+    }
+}
